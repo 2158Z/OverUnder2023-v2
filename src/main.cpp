@@ -4,7 +4,7 @@ using namespace pros;
 Controller master(pros::E_CONTROLLER_MASTER);
 
 ADIDigitalIn cataSwitch('A');
-ADIDigitalOut leftPiston('C', false);
+ADIDigitalOut leftPiston('C', true);
 ADIDigitalOut rightPiston('B', false);
 ADIDigitalOut odomLift('E', false);
 Motor cata(2, E_MOTOR_GEAR_RED, true, E_MOTOR_ENCODER_DEGREES);
@@ -40,7 +40,7 @@ float SidewaysTracker_in_to_deg_ratio = M_PI*SidewaysTracker_diameter/360.0;
 
 float drive_turn_max_voltage;
 float drive_turn_kp;
-float drive_turn_ki;
+float drive_turn_ki;    
 float drive_turn_kd;
 float drive_turn_starti;
 
@@ -74,7 +74,7 @@ float drive_swing_settle_error;
 float drive_swing_settle_time;
 float drive_swing_timeout;
 
-float drive_desired_heading;
+float drive_desired_heading = 0;
 
 Rotation R_ForwardTracker(1);
 Rotation R_SidewaysTracker(2);
@@ -94,7 +94,7 @@ ADIDigitalIn E_SidewaysTracker(2);
  */
 
 float get_absolute_heading(){ 
-  return( reduce_0_to_360( inertial.get_rotation()*360.0/gyro_scale ) ); 
+  return reduce_0_to_360( inertial.get_rotation()); 
 }
 
 float get_left_position_in(){
@@ -248,13 +248,13 @@ void set_heading(float orientation_deg){
 void position_track(){
   while(1){
     odom.update_position(get_ForwardTracker_position(), get_SidewaysTracker_position(), get_absolute_heading());
-	delay(5);
+    delay(5);
   }
 }
 
 int position_track_task(){
 	position_track();
-  	return(0);
+  return(0);
 }
 
 void set_coordinates(float X_position, float Y_position, float orientation_deg){
@@ -319,12 +319,12 @@ void turn_to_angle(float angle, float turn_max_voltage = drive_turn_max_voltage,
 void initialize() {
   selector::init();
 
-	odom.set_physical_distances(ForwardTracker_center_distance, 0);
+	odom.set_physical_distances(0, 0);
 
-	set_drive_constants(10, 1, 0, 0, 0);
-	set_heading_constants(6, .4, 0, 1, 0);
-	set_turn_constants(12, .4, .03, 3, 15);
-	set_swing_constants(12, .3, .001, 2, 15);
+	set_drive_constants(12000, 10, 0, 0, 0);
+	set_heading_constants(6000, .4, 0, 1, 0);
+	set_turn_constants(12000, .4, .03, 3, 15);
+	set_swing_constants(12000, .3, .001, 2, 15);
 	set_drive_exit_conditions(1.5, 300, 5000);
 	set_turn_exit_conditions(1, 300, 3000);
 	set_swing_exit_conditions(1, 300, 3000);
@@ -384,15 +384,16 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
+  drive_with_voltage(12000,12000);
 	switch(selector::auton) {
 		case 1:	
       drive_distance(6);
-			// drive_distance(24);
-			// turn_to_angle(-45);
-			// drive_distance(-36);
-			// right_swing_to_angle(-90);
-			// drive_distance(24);
-			// turn_to_angle(0);
+			drive_distance(24);
+			turn_to_angle(-45);
+			drive_distance(-36);
+			right_swing_to_angle(-90);
+			drive_distance(24);
+			turn_to_angle(0);
 			break;
 		case 2:
 			break;
