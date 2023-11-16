@@ -29,13 +29,13 @@ Odom odom;
 
 float wheel_diameter = 3.125;
 float wheel_ratio = 0.6;
-float gyro_scale;
+float gyro_scale = 1;
 float drive_in_to_deg_ratio = wheel_ratio/360.0*M_PI*wheel_diameter;
 float ForwardTracker_center_distance(ForwardTracker_center_distance);
-float ForwardTracker_diameter;
+float ForwardTracker_diameter = 0;
 float ForwardTracker_in_to_deg_ratio = M_PI*ForwardTracker_diameter/360.0;
-float SidewaysTracker_center_distance;
-float SidewaysTracker_diameter;
+float SidewaysTracker_center_distance = 0;
+float SidewaysTracker_diameter = 0;
 float SidewaysTracker_in_to_deg_ratio = M_PI*SidewaysTracker_diameter/360.0;
 
 float drive_turn_max_voltage;
