@@ -27,8 +27,8 @@ MotorGroup fullMotorGroup({rightMotor1, rightMotor2, rightMotor3, leftMotor1, le
 IMU inertial(1);
 Odom odom;
 
-float wheel_diameter;
-float wheel_ratio;
+float wheel_diameter = 3.125;
+float wheel_ratio = 0.6;
 float gyro_scale;
 float drive_in_to_deg_ratio = wheel_ratio/360.0*M_PI*wheel_diameter;
 float ForwardTracker_center_distance(ForwardTracker_center_distance);
@@ -317,9 +317,11 @@ void turn_to_angle(float angle, float turn_max_voltage = drive_turn_max_voltage,
 }
 
 void initialize() {
+  selector::init();
+
 	odom.set_physical_distances(ForwardTracker_center_distance, 0);
 
-	set_drive_constants(10, 1.5, 0, 10, 0);
+	set_drive_constants(10, 1, 0, 0, 0);
 	set_heading_constants(6, .4, 0, 1, 0);
 	set_turn_constants(12, .4, .03, 3, 15);
 	set_swing_constants(12, .3, .001, 2, 15);
@@ -384,12 +386,13 @@ void competition_initialize() {}
 void autonomous() {
 	switch(selector::auton) {
 		case 1:	
-			drive_distance(24);
-			turn_to_angle(-45);
-			drive_distance(-36);
-			right_swing_to_angle(-90);
-			drive_distance(24);
-			turn_to_angle(0);
+      drive_distance(6);
+			// drive_distance(24);
+			// turn_to_angle(-45);
+			// drive_distance(-36);
+			// right_swing_to_angle(-90);
+			// drive_distance(24);
+			// turn_to_angle(0);
 			break;
 		case 2:
 			break;

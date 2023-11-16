@@ -132,4 +132,5 @@ namespace selector{
         lv_obj_align(skillsBtn, NULL, LV_ALIGN_CENTER, 0, 0);
 
         pros::Task tabWatcher_task(tabWatcher);
+    }
 }
